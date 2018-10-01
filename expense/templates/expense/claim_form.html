@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% block body %}
+
+<div class="container" style="text-align:center;width:70%">
+        <div class="panel panel-default">
+                <div class="panel-heading">
+    <h1> Expense Claim Form</h1>
+</div>
+<div class="panel panel-body"></div>
+    <form method="post">
+        {% csrf_token %} 
+        <div class='row'>
+            <div class='col-md-4'>
+                Name: {{form.name}}
+            </div>
+            <div class='col-md-4'>
+                    Branch Code: {{form.branchcode}}
+                </div>
+                
+                    <div class='col-md-4'>
+                            Cost Center: {{form.costcenter}}
+                        </div>
+        </div>
+        <br/>
+        <div class='row'>
+                <div class='col-md-4'>
+                    Bank Acc. Name: {{form.bankaccname}}
+                </div>
+                <div class='col-md-4'>
+                        Bank Code: {{form.bankcode}}
+                    </div>
+                    <div class='col-md-4'>
+                            Bank Acc. No: {{form.bankacc}}
+                        </div>
+                    
+                       
+            </div>
+            <br/>
+            <div class="row">
+                    <div class='col-md-4'>
+                            GL Code: {{form.glcode}}
+                        </div>
+                        <div class='col-md-4'>
+                                Transaction Date: {{form.transactiondate}}
+                            </div>
+            </div>
+            <br/>
+            <div class="row">
+                    <div class='col-md-4'>
+                            Description: {{form.description}}
+                        </div>
+                        <div class='col-md-4'>
+                                Amount: RM {{form.amount}}
+                            </div>
+            </div>
+        <br/>
+        
+        <button type="submit">Submit Claim</button>
+    </form>
+</div>
+</div>
+
+{% endblock %}

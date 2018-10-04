@@ -19,6 +19,7 @@ class RegistrationForm(UserCreationForm):
                 }))
     password1 = forms.CharField(
         required=True,
+        label="Password",
         widget=forms.PasswordInput(
             attrs={
                 'class' : 'form-control',
@@ -26,6 +27,7 @@ class RegistrationForm(UserCreationForm):
                 }))
     password2 = forms.CharField(
         required=True,
+        label="Confirm Password",
         widget=forms.PasswordInput(
             attrs={
                 'class' : 'form-control'
@@ -41,6 +43,8 @@ class RegistrationForm(UserCreationForm):
                 'password1',
                 'password2'
                 )
+        
+        
 
 
     def save(self, commit=True):

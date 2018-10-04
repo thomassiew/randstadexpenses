@@ -25,7 +25,7 @@ SECRET_KEY = '72qof%1x7m97b1%co#hx2yp9@1i&5+a)hz&2k%b#ia3mtjo8*l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -101,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-ALLOWED_HOSTS = ['thomassiew.pythonanywhere.com']
+ALLOWED_HOSTS = ['thomassiew.pythonanywhere.com','localhost']
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

@@ -1,62 +1,164 @@
 {% extends 'base.html' %} {% block body %}
 
-<div class="container" style="text-align:center;width:70%">
-        <div class="panel panel-default">
-                <div class="panel-heading">
-    <h1> Expense Claim Form</h1>
-</div>
-<div class="panel panel-body"></div>
-    <form method="post">
-        {% csrf_token %} 
-        <div class='row'>
-            <div class='col-md-4'>
-                Name: {{form.name}}
-            </div>
-            <div class='col-md-4'>
-                    Branch Code: {{form.branchcode}}
-                </div>
-                
-                    <div class='col-md-4'>
-                            Cost Center: {{form.costcenter}}
-                        </div>
-        </div>
-        <br/>
-        <div class='row'>
-                <div class='col-md-4'>
-                    Bank Acc. Name: {{form.bankaccname}}
-                </div>
-                <div class='col-md-4'>
-                        Bank Code: {{form.bankcode}}
-                    </div>
-                    <div class='col-md-4'>
-                            Bank Acc. No: {{form.bankacc}}
-                        </div>
-                    
-                       
-            </div>
-            <br/>
-            <div class="row">
-                    <div class='col-md-4'>
-                            GL Code: {{form.glcode}}
-                        </div>
-                        <div class='col-md-4'>
-                                Transaction Date: {{form.transactiondate}}
-                            </div>
-            </div>
-            <br/>
-            <div class="row">
-                    <div class='col-md-4'>
-                            Description: {{form.description}}
-                        </div>
-                        <div class='col-md-4'>
-                                Amount: RM {{form.amount}}
-                            </div>
-            </div>
-        <br/>
-        
-        <button type="submit">Submit Claim</button>
-    </form>
-</div>
-</div>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $("#id_transactiondate").datepicker({
+                dateFormat: "yy-mm-dd",
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 2,
+                onClose: function (selectedDate) {
+                    $("#id_transactiondate").datepicker("option", "minDate", selectedDate);
+                }
+            });
+        });
 
-{% endblock %}
+    </script>
+    <style>
+        .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            
+            /* Modal Content/Box */
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 45%; /* Could be more or less, depending on screen size */
+            }
+            
+            /* The Close Button */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+
+    <head>
+
+        <div class="container">
+            {% if msgtrue == "true" %}
+            <div class="alert alert-{{alerttype}}" role="alert">
+                {{msg}}
+            </div>
+
+
+            {%endif%}
+            <h1>Your Claims <button style="float:right" class="btn btn-primary" id="myBtn">Request Claim</button></h1>
+            <br />
+            <table class='table' border="0">
+                <tr>
+                    <th> Name </th>
+                    <th> Date </th>
+                    <th>Branch Code </th>
+                    <th> Bank Code </th>
+                    <th> Bank Account No </th>
+                    <th> Bank Account Name </th>
+                    <th>Cost Center </th>
+                    <th>GL Code </th>
+                    <th> Transaction Date </th>
+                    <th>Description </th>
+                    <th>Amount </th>
+
+                </tr>
+
+                {% for x in myclaim %}
+                <tr>
+                    <td>{{x.name}}</td>
+                    <td>{{x.date}}</td>
+                    <td>{{x.branchcode}}</td>
+                    <td>{{x.bankcode}}</td>
+                    <td>{{x.bankacc}}</td>
+                    <td>{{x.bankaccname}}</td>
+                    <td> {{x.costcenter}}</td>
+                    <td>{{x.glcode}}</td>
+                    <td> {{x.transactiondate}}</td>
+                    <td> {{x.description}}</td>
+
+                    <td>RM {{x.amount}}</td>
+
+                    {%endfor%}
+                </tr>
+            </table>
+
+        </div>
+
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3> Expense Claim Form</h3>
+                    </div>
+                    <div class="panel panel-body">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <table border="0" class='table'>
+                                {{ form }}
+                            </table>
+                            <button class="btn btn-primary" type="submit">Submit Claim</button>
+                            <button class="btn btn-default" id="cancelBtn" type="reset">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <script>
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementById("cancelBtn");
+
+            // When the user clicks on the button, open the modal 
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+        {% endblock %}

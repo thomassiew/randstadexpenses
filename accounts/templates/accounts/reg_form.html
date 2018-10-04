@@ -1,32 +1,35 @@
 {% extends 'base.html' %} {% block body %}
 
 <div class="container" style="text-align:center;width:50%">
-        <div class="panel panel-default">
-                <div class="panel-heading">
-    <h1> Register</h1>
+    {% if msgtrue == "true" %}
+    {%for x in msg%}
+    <div class="alert alert-{{alerttype}}" role="alert">
+        {{x}}
     </div>
-    <div class="panel panel-body"></div>
-    <form method="post">
-        {% csrf_token %} 
-        {%for x in form %}
-        <p>{% if x.name == "password1" %}
-            password
-            
-            {% endif %} 
+    {%endfor%}
 
-            {% if x.name != 'password1'%}
-            {{x.name}} 
-            
-            {%endif%}
-            
-            
-            
-            
-            {{x}}</p>
-        {%endfor%}
-        <button type="submit">Register</button>
-    </form>
-</div>
-</div>
+    {%endif%}
+    <p>
+        {% if form.errors %}
+        <h1>ERRORRRRRR same email again???</h1>
+        {% endif %}
+    </p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1> Register</h1>
+        </div>
+        <div class="panel panel-body">
 
-{% endblock %}
+            <form method="post">
+                {% csrf_token %}
+
+
+                <table border="0" class='table'>
+                    {{form}}
+                </table>
+                <button class="btn btn-primary" type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    {% endblock %}
